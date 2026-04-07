@@ -1,0 +1,28 @@
+resources:
+  jobs:
+    New_Job_Apr_07_2026_02_13_PM:
+      name: New Job Apr 07, 2026, 02:13 PM
+      schedule:
+        quartz_cron_expression: 40 0 13 * * ?
+        timezone_id: America/Sao_Paulo
+        pause_status: UNPAUSED
+      tasks:
+        - task_key: Bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/bms4@cin.ufpe.br/Atividade_bronze_to_silver
+            source: WORKSPACE
+        - task_key: Silver
+          depends_on:
+            - task_key: Bronze
+          notebook_task:
+            notebook_path: /Workspace/Users/bms4@cin.ufpe.br/Atividade_bronze_to_silver
+            source: WORKSPACE
+        - task_key: Gold
+          depends_on:
+            - task_key: Silver
+          notebook_task:
+            notebook_path: /Workspace/Users/bms4@cin.ufpe.br/Atividade_silver_to_gold
+            source: WORKSPACE
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
